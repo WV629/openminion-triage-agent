@@ -1,0 +1,87 @@
+diff --git a/src/openminion/api/agent.py b/src/openminion/api/agent.py
+index 09ca5dad..796925aa 100644
+--- a/src/openminion/api/agent.py
++++ b/src/openminion/api/agent.py
+@@ -165,8 +165,9 @@ class Agent(Generic[InputT, OutputT]):
+         }
+         if self.agent_id:
+             payload["agent_id"] = self.agent_id
+-        if self.instructions:
+-            payload["override_system_prompt"] = self.instructions
++        instructions = self._instructions_with_output_contract()
++        if instructions:
++            payload["override_system_prompt"] = instructions
+         if self.model:
+             payload["override_model"] = self.model
+         if self.tools or self._tools_supplied:
+@@ -239,6 +240,27 @@ class Agent(Generic[InputT, OutputT]):
+         if profile_ids:
+             registry.exposure_service.unregister_profiles(profile_ids)
+ 
++    def _instructions_with_output_contract(self) -> str | None:
++        """Append the ``output_type`` JSON Schema so the model knows the contract.
++
++        Without this, ``output_type`` is only checked after the fact and the
++        model never sees the schema it is validated against.
++        """
++        base = (self.instructions or "").strip()
++        output_type = self.output_type
++        if not (
++            isinstance(output_type, type)
++            and issubclass(output_type, BaseModel)
++        ):
++            return base or None
++        schema = json.dumps(output_type.model_json_schema(), separators=(",", ":"))
++        contract = (
++            "Final answer format: reply with ONLY one JSON object (no Markdown, "
++            "no prose, no code fences) that validates against this JSON Schema: "
++            + schema
++        )
++        return f"{base}\n\n{contract}" if base else contract
++
+     def _coerce_output(self, text: str) -> OutputT:
+         if self.output_type is None or self.output_type is str:
+             return cast(OutputT, text)
+@@ -257,8 +279,10 @@ class Agent(Generic[InputT, OutputT]):
+                             OutputT,
+                             self.output_type.model_validate_json(stripped),
+                         )
+-                    except ValidationError:
+-                        pass
++                    except ValidationError as inner:
++                        # Report the schema error of the JSON we actually found,
++                        # not the "Invalid JSON at column 1" of the prose wrapper.
++                        exc = inner
+                 raise AgentOutputValidationError(
+                     f"Reply did not validate against {self.output_type.__name__}: {exc}",
+                     raw_text=text,
+diff --git a/src/openminion/modules/brain/runtime/verification/policy.py b/src/openminion/modules/brain/runtime/verification/policy.py
+index 28bd5f9e..cecead80 100644
+--- a/src/openminion/modules/brain/runtime/verification/policy.py
++++ b/src/openminion/modules/brain/runtime/verification/policy.py
+@@ -221,7 +221,13 @@ def _has_freshness_domain_evidence(
+     if not _freshness_domain_has_canonical_tool(domain):
+         return True
+     for tool_name in _successful_tool_result_names(action_result):
+-        if normalize_raw_model_tool_name(tool_name) == domain:
++        normalized = normalize_raw_model_tool_name(tool_name)
++        if normalized == domain:
++            return True
++        # A caller-supplied tool (e.g. @openminion.tool) that returned
++        # successfully is live evidence the runtime cannot classify by domain;
++        # do not discard it in favour of a built-in tool that was never offered.
++        if normalized not in ALL_MODEL_TOOL_IDS_SET:
+             return True
+     return False
+ 
+@@ -312,7 +318,9 @@ def build_freshness_failure_message(
+         )
+     domain = contract.domain.value
+     reason_text = (
+-        "; ".join(reasons) if reasons else "required live-data obligations were not met"
++        "; ".join(r.strip().rstrip(".") for r in reasons)
++        if reasons
++        else "required live-data obligations were not met"
+     )
+     return (
+         f"I couldn't provide a grounded current {domain} answer because {reason_text}. "
