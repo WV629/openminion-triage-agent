@@ -1,0 +1,244 @@
+{
+  "repo": "openminion/openminion",
+  "summary": "",
+  "items": [
+    {
+      "number": 437,
+      "kind": "issue",
+      "title": "`APIRuntime` does not start with `storage.backend: postgres`",
+      "suggested_labels": [
+        "bug",
+        "area:runtime",
+        "area:sessions",
+        "status:awaiting-release"
+      ],
+      "priority": "P1",
+      "reason": "Fix merged as PR #458 (2026-10-28T10:01:26Z); holding P1 until 0.1.14 release verifies postgres startup.",
+      "url": "https://github.com/openminion/openminion/issues/437"
+    },
+    {
+      "number": 449,
+      "kind": "issue",
+      "title": "Backend without atomic capture: consolidation runs re-extract up to `batch_limit` and add one pending intent per run",
+      "suggested_labels": [
+        "bug",
+        "area:runtime",
+        "area:scheduling",
+        "status:contributor-in-progress"
+      ],
+      "priority": "P1",
+      "reason": "Still the highest-impact runtime defect: unbounded extraction requests and growing pending intent set.",
+      "url": "https://github.com/openminion/openminion/issues/449"
+    },
+    {
+      "number": 448,
+      "kind": "issue",
+      "title": "Identity hard constraint `NEVER write memory records` bypassed by a turn's own terminal capture",
+      "suggested_labels": [
+        "bug",
+        "area:runtime",
+        "area:approvals",
+        "area:identity",
+        "status:contributor-in-progress"
+      ],
+      "priority": "P1",
+      "reason": "Policy-enforcement bypass on a security-relevant write path; no linked fix PR yet.",
+      "url": "https://github.com/openminion/openminion/issues/448"
+    },
+    {
+      "number": 456,
+      "kind": "issue",
+      "title": "Scheduled memory consolidation turn captures itself: gateway drops the `memory_consolidation_job` marker",
+      "suggested_labels": [
+        "bug",
+        "area:runtime",
+        "area:scheduling",
+        "status:awaiting-release"
+      ],
+      "priority": "P2",
+      "reason": "Fix merged as PR #463; label already reflects fix-merged-awaiting-release.",
+      "url": "https://github.com/openminion/openminion/issues/456"
+    },
+    {
+      "number": 446,
+      "kind": "issue",
+      "title": "PostgreSQL: `storage migrate` modules share one `alembic_version`, runtime storage then fails on `sessions`",
+      "suggested_labels": [
+        "bug",
+        "area:runtime",
+        "area:sessions",
+        "status:contributor-in-progress"
+      ],
+      "priority": "P2",
+      "reason": "Split out of #437; independent of the runtime startup fix.",
+      "url": "https://github.com/openminion/openminion/issues/446"
+    },
+    {
+      "number": 447,
+      "kind": "issue",
+      "title": "`APIRuntime` start that fails after storage is built closes nothing",
+      "suggested_labels": [
+        "bug",
+        "area:runtime",
+        "status:contributor-in-progress"
+      ],
+      "priority": "P2",
+      "reason": "Resource-leak on failed start; lifecycle close path only wired for constructed runtimes.",
+      "url": "https://github.com/openminion/openminion/issues/447"
+    },
+    {
+      "number": 435,
+      "kind": "issue",
+      "title": "[0.1.12] @tool arguments typed as a Pydantic model or dataclass reach the function as a plain dict",
+      "suggested_labels": [
+        "bug",
+        "area:sdk",
+        "area:tools",
+        "status:awaiting-release"
+      ],
+      "priority": "P2",
+      "reason": "PR #455 release notes claim typed @tool argument preservation is in the 0.1.14 line; verify before closing.",
+      "url": "https://github.com/openminion/openminion/issues/435"
+    },
+    {
+      "number": 450,
+      "kind": "issue",
+      "title": "`python -m openminion.modules.storage` exits 0 when storagectl's `main()` returns 2",
+      "suggested_labels": [
+        "bug",
+        "area:runtime",
+        "status:awaiting-release"
+      ],
+      "priority": "P3",
+      "reason": "Fix merged as PR #451; narrow exit-code correctness, low user impact.",
+      "url": "https://github.com/openminion/openminion/issues/450"
+    },
+    {
+      "number": 452,
+      "kind": "issue",
+      "title": "Upgrade guide: `storage backup` refuses 10 of 17 SQLite files; turn-start reset writes legacy working-state shape",
+      "suggested_labels": [
+        "documentation",
+        "area:runtime",
+        "status:awaiting-release"
+      ],
+      "priority": "P3",
+      "reason": "Docs fix merged as PR #453 (plus release-carried #460).",
+      "url": "https://github.com/openminion/openminion/issues/452"
+    },
+    {
+      "number": 457,
+      "kind": "pr",
+      "title": "Report the migration error in `storage migrate` entries",
+      "suggested_labels": [
+        "area:runtime",
+        "status:needs-review"
+      ],
+      "priority": "P2",
+      "reason": "Only open PR; fixes silent `status: error` with no message in migration reports. Ready for review.",
+      "url": "https://github.com/openminion/openminion/pull/457"
+    },
+    {
+      "number": 463,
+      "kind": "pr",
+      "title": "Preserve trusted consolidation context",
+      "suggested_labels": [
+        "area:runtime",
+        "area:scheduling"
+      ],
+      "priority": "P1",
+      "reason": "Closes the self-capture path in #456; landed after the prior triage run.",
+      "url": "https://github.com/openminion/openminion/pull/463"
+    },
+    {
+      "number": 458,
+      "kind": "pr",
+      "title": "Start `APIRuntime` with PostgreSQL runtime storage",
+      "suggested_labels": [
+        "area:runtime",
+        "area:sessions"
+      ],
+      "priority": "P1",
+      "reason": "Resolves the reported failure in #437; postgres startup verification still owed.",
+      "url": "https://github.com/openminion/openminion/pull/458"
+    },
+    {
+      "number": 451,
+      "kind": "pr",
+      "title": "Exit `python -m openminion.modules.storage` with the status that `main()` returns",
+      "suggested_labels": [
+        "area:runtime"
+      ],
+      "priority": "P3",
+      "reason": "Addresses #450.",
+      "url": "https://github.com/openminion/openminion/pull/451"
+    },
+    {
+      "number": 453,
+      "kind": "pr",
+      "title": "Document runtime home backups and the typed save boundary",
+      "suggested_labels": [
+        "documentation"
+      ],
+      "priority": "P3",
+      "reason": "Documentation-only; addresses #452.",
+      "url": "https://github.com/openminion/openminion/pull/453"
+    },
+    {
+      "number": 455,
+      "kind": "pr",
+      "title": "Prepare OpenMinion 0.1.14",
+      "suggested_labels": [
+        "release"
+      ],
+      "priority": "P2",
+      "reason": "Version bump and changelog for the 0.1.14 line.",
+      "url": "https://github.com/openminion/openminion/pull/455"
+    },
+    {
+      "number": 459,
+      "kind": "pr",
+      "title": "Release OpenMinion 0.1.14",
+      "suggested_labels": [
+        "release"
+      ],
+      "priority": "P2",
+      "reason": "dev to main promotion; carries the time-tool freshness change.",
+      "url": "https://github.com/openminion/openminion/pull/459"
+    },
+    {
+      "number": 460,
+      "kind": "pr",
+      "title": "Include backup guidance in OpenMinion 0.1.14",
+      "suggested_labels": [
+        "release"
+      ],
+      "priority": "P2",
+      "reason": "Cherry-picks #453 guidance into the release line.",
+      "url": "https://github.com/openminion/openminion/pull/460"
+    },
+    {
+      "number": 461,
+      "kind": "pr",
+      "title": "Publish OpenMinion 0.1.14 runtime metadata",
+      "suggested_labels": [
+        "release"
+      ],
+      "priority": "P3",
+      "reason": "Automated runtime metadata publication.",
+      "url": "https://github.com/openminion/openminion/pull/461"
+    },
+    {
+      "number": 462,
+      "kind": "pr",
+      "title": "Back-merge OpenMinion 0.1.14 runtime metadata",
+      "suggested_labels": [
+        "release"
+      ],
+      "priority": "P3",
+      "reason": "Keeps main/dev runtime publication trees identical.",
+      "url": "https://github.com/openminion/openminion/pull/462"
+    }
+  ],
+  "needs_maintainer_attention": []
+}

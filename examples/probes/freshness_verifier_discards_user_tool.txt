@@ -1,0 +1,3 @@
+MODE default cb completed {'input_tokens': 4679, 'output_tokens': 89, 'cache_read_tokens': 0, 'llm_calls': 2, 'tool_calls': 1, 'tool_errors': 0, 'duration_ms': 17743}
+openminion: I couldn't provide a grounded current weather answer because Missing weather-domain live-data evidence for a freshness-sensitive answer.; Missing exact-date evidence for an exact-date freshness answer.. Please retry with live data available so I can answer with sources and an exact date.
+callback calls: [('get_weather', 'call_00_ET_gi9Wy7HZqrPZFxn5NEax2416')]

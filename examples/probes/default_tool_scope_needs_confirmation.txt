@@ -1,0 +1,10 @@
+MODE default nocb completed {'input_tokens': 2119, 'output_tokens': 39, 'cache_read_tokens': 0, 'llm_calls': 1, 'tool_calls': 0, 'tool_errors': 0, 'duration_ms': 9963}
+openminion: Policy confirmation required.
+get_weather
+Risk: write
+Side effects: local
+Reversibility: reversible
+Reason: ENFORCE_SAFE_CONFIRM
+Choices: allow_once, allow_session, deny
+Reply exactly yes or allow_once to allow once, session or allow_session to allow this tool for the session, or no or deny to cancel.
+callback calls: []

@@ -1,0 +1,79 @@
+{
+  "repo": "openminion/openminion",
+  "run": "20261028-105341",
+  "config": ".openminion/agents.json",
+  "steps": [
+    {
+      "step": "triage",
+      "structured_output": "failed",
+      "raw_text_head": "openminion: {\n\"schema_version\": \"1.1\",\n\"report\": \"TriageReport\",\n\"repository\": \"openminion/openminion\",\n\"window\": {\n\"retrieved_at\": \"2026-10-28T10:53:58Z\",\n\"lookback_days\": 14,\n\"window_start\": \"2026-10-14\",\n\"window_end\": \"2026-10-28\"\n},\n\"prior_triage\": {\n\"found\": false,\n\"note\": \"no previous run \u2014 ba",
+      "secs": 85.9
+    },
+    {
+      "step": "format-repair",
+      "run_id": "c98c610d634b4f22a66ba71d14e8f252",
+      "run_state": "completed",
+      "session_id": "triage-openminion-openminion-format",
+      "stats": {
+        "input_tokens": 6969,
+        "output_tokens": 2984,
+        "cache_read_tokens": 0,
+        "llm_calls": 1,
+        "tool_calls": 0,
+        "tool_errors": 0,
+        "duration_ms": 25021
+      },
+      "secs": 31.5
+    },
+    {
+      "step": "release-writer",
+      "run_id": "3cfde1d46f014d6c80909dc508c0d70d",
+      "run_state": "completed",
+      "session_id": "ca862ec945834df6918445388919054c",
+      "stats": {
+        "input_tokens": 2138,
+        "output_tokens": 569,
+        "cache_read_tokens": 0,
+        "llm_calls": 1,
+        "tool_calls": 0,
+        "tool_errors": 0,
+        "duration_ms": 23995
+      },
+      "secs": 28.5
+    },
+    {
+      "step": "publish",
+      "run_id": "73f714e37ea84c51953c5af2459d9c91",
+      "run_state": "completed",
+      "text": "openminion: Saved. The triage outputs for **openminion/openminion** are on disk in the run folder `openminion__openminion-20261028-105341`:\n\n- `triage_report.md` \u2014 human-readable report\n- `triage_report.json` \u2014 structured version of the same\n- `state/openminion__openminion.json` \u2014 persisted memory s",
+      "written": [
+        "out/openminion__openminion-20261028-105341/triage_report.md",
+        "out/openminion__openminion-20261028-105341/triage_report.json",
+        "state/openminion__openminion.json"
+      ]
+    }
+  ],
+  "approvals": [
+    {
+      "tool": "save_outputs",
+      "approval_id": "call_00_hpujdkeinuVVhaU2jWfv9451",
+      "approved": true
+    }
+  ],
+  "tool_trace": [
+    {
+      "tool": "list_recent_issues",
+      "count": 9,
+      "ms": 673
+    },
+    {
+      "tool": "list_recent_pulls",
+      "count": 10,
+      "ms": 788
+    },
+    {
+      "tool": "previous_triage",
+      "count": 0
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+# Triage report — openminion/openminion
+
+
+
+| # | Kind | Priority | Labels | Title |
+|---|---|---|---|---|
+| [#437](https://github.com/openminion/openminion/issues/437) | issue | P1 | bug, area:runtime, area:sessions, status:awaiting-release | APIRuntime does not start with storage.backend: postgres (api/core/bootstrap.py:126) |
+| [#448](https://github.com/openminion/openminion/issues/448) | issue | P1 | bug, area:runtime, area:approvals, area:identity, status:contributor-in-progress | Identity hard constraint `NEVER write memory records` denies cron capture recovery, but a turn's own terminal capture writes with no policy check |
+| [#449](https://github.com/openminion/openminion/issues/449) | issue | P1 | bug, area:runtime, area:scheduling, status:contributor-in-progress | Backend without atomic capture: each consolidation run re-extracts up to batch_limit intents and adds one more pending intent |
+| [#458](https://github.com/openminion/openminion/pull/458) | pr | P1 | area:runtime, area:sessions | Start APIRuntime with PostgreSQL runtime storage |
+| [#463](https://github.com/openminion/openminion/pull/463) | pr | P1 | area:runtime, area:scheduling | Preserve trusted consolidation context |
+| [#435](https://github.com/openminion/openminion/issues/435) | issue | P2 | bug, area:sdk, area:tools, status:awaiting-release | [0.1.12] @tool arguments typed as a Pydantic model or dataclass reach the function as a plain dict |
+| [#446](https://github.com/openminion/openminion/issues/446) | issue | P2 | bug, area:runtime, area:sessions, status:contributor-in-progress | PostgreSQL: storage migrate modules share one alembic_version, runtime storage then fails on sessions |
+| [#447](https://github.com/openminion/openminion/issues/447) | issue | P2 | bug, area:runtime, status:contributor-in-progress | APIRuntime start that fails after storage is built closes nothing: SQLite files and PostgreSQL connections stay open |
+| [#455](https://github.com/openminion/openminion/pull/455) | pr | P2 | release | Prepare OpenMinion 0.1.14 |
+| [#456](https://github.com/openminion/openminion/issues/456) | issue | P2 | bug, area:runtime, area:scheduling, status:awaiting-release | Scheduled memory consolidation turn captures itself: gateway drops the memory_consolidation_job marker |
+| [#457](https://github.com/openminion/openminion/pull/457) | pr | P2 | area:runtime, status:needs-review | Report the migration error in `storage migrate` entries |
+| [#459](https://github.com/openminion/openminion/pull/459) | pr | P2 | release | Release OpenMinion 0.1.14 |
+| [#450](https://github.com/openminion/openminion/issues/450) | issue | P3 | bug, area:runtime, status:awaiting-release | `python -m openminion.modules.storage` exits 0 when storagectl main() returns 2 |
+| [#451](https://github.com/openminion/openminion/pull/451) | pr | P3 | area:runtime | Exit with the status that main() returns |
+| [#452](https://github.com/openminion/openminion/issues/452) | issue | P3 | documentation, area:runtime, status:awaiting-release | Upgrade guide: storage backup refuses 10 of a runtime home's 17 SQLite files; turn-start reset writes pre-#419 working-state shape |
+| [#453](https://github.com/openminion/openminion/pull/453) | pr | P3 | documentation | Document runtime home backups and the typed save boundary |
+| [#460](https://github.com/openminion/openminion/pull/460) | pr | P3 | release | Include backup guidance in OpenMinion 0.1.14 |
+| [#461](https://github.com/openminion/openminion/pull/461) | pr | P3 | release | Publish OpenMinion 0.1.14 runtime metadata |
+| [#462](https://github.com/openminion/openminion/pull/462) | pr | P3 | release | Back-merge 0.1.14 runtime metadata |
+
+## Why
+
+- #437: Blocks all PostgreSQL users from starting the API runtime/CLI. Fix is merged but unreleased, so status label is correct.
+- #449: Unbounded data growth (pending 1→15 over 14 runs) and wasted model spend; highest concrete-impact issue still marked in progress.
+- #448: Security-policy bypass: two gates deny the same write while the terminal path performs it unchecked. Highest trust impact in the set.
+- #446: Schemas diverge from the declared migration state on Postgres; error-reporting PR improves diagnosis but does not resolve the collision.
+- #447: Resource leak on startup failure; masked by #437 since that failure is now the common trigger.
+- #456: Root cause of the self-capture and pending-intent growth in #449; fix merged, so awaiting-release is accurate.
+- #435: Public SDK contract break that silently degrades agents; fix shipped in the 0.1.14 package line.
+- #450: Exit-code lie breaks CI/scripting detection of storage failures; narrow one-line fix already merged.
+- #452: Documentation-only gap with merged guidance; no code change required.
+- #457: Only open PR in the window and it is unlabeled, so it will not surface in triage views. Directly aids #446 diagnosis.
+- #463: Largest behavioral change: bound trusted projection to task provenance and pauses unverifiable legacy jobs. Addresses #456/#449 and touches #448.
+- #458: Fixes #437.
+- #451: Fixes #450.
+- #453: Fixes #452.
+- #455: Version bump plus @tool typed-argument and UTC freshness fixes (#435).
+- #459: dev→main promotion; check gates listed in the description.
+- #460: Changelog alignment for #453.
+- #461: Bot artifact publication; merge-commit requirement fulfilled.
+- #462: Keeps release trees identical across main and dev.
+
+---
+
+# Draft release notes
+
+openminion: ### Features
+- Start `APIRuntime` with PostgreSQL runtime storage (#458)
+
+### Fixes
+- Preserve trusted consolidation context (#463)
+- Exit `python -m openminion.modules.storage` with the status that `main()` returns (#451)
+
+### Docs & Chores
+- Back-merge OpenMinion 0.1.14 runtime metadata (#462)
+- Publish OpenMinion 0.1.14 runtime metadata (#461)
+- Include backup guidance in OpenMinion 0.1.14 (#460)
+- Release OpenMinion 0.1.14 (#459)
+- Prepare OpenMinion 0.1.14 (#455)
+- Document runtime home backups and the typed save boundary (#453)
+
+Highlights: OpenMinion 0.1.14 ships with PostgreSQL-backed `APIRuntime` storage, tighter consolidation and CLI exit behavior, and clear guidance on runtime home backups.
