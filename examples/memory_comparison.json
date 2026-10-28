@@ -1,0 +1,38 @@
+{
+  "run1_items": 19,
+  "run2_items": 19,
+  "unchanged": [
+    437,
+    449,
+    448,
+    456,
+    446,
+    447,
+    435,
+    450,
+    452,
+    457,
+    463,
+    458,
+    451,
+    453,
+    455,
+    459,
+    461,
+    462
+  ],
+  "priority_changed": [
+    {
+      "number": 460,
+      "run1": "P3",
+      "run2": "P2"
+    }
+  ],
+  "new_items": [],
+  "needs_maintainer_attention": {
+    "run1": [],
+    "run2": []
+  },
+  "run2_previous_triage_items_loaded": 19,
+  "run2_model_self_report": "new_since_prior_run: 0 (from raw triage JSON)"
+}
