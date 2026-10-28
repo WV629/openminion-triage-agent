@@ -14,11 +14,12 @@ GitHub issue/PR triage + draft release notes agent on OpenMinion 0.1 SDK, with h
 - FINDINGS.md: F1–F13 (new: F7 default tool scope needs confirmation, F8 output_type schema never sent, F9 freshness verifier drops user-tool evidence, F10 masked validation error, F11 agent-id prefix + lost run facts, F12 DeepSeek forced tool_choice 400s + stats undercount, F13 forced_tools soft).
 - Fix patch for F8/F9/F10: `patches/0001-output-schema-validation-error-freshness-user-tools.patch` (applied locally to `upstream-openminion/`; run 2 used the patched SDK, run 1 the unpatched one). Passes upstream tests `tests/api/test_agent.py` (37) + `tests/brain/test_freshness_enforcement.py`, `test_tgcr_verifier_contract.py` (19); full suite not run, no new regression tests written yet.
 - README "Building Blocks Tested" + "What We Learned" written.
-- Pushed to PRIVATE repo (see below).
+- Pushed to PRIVATE repo (see below), 23 files, tree identical to local HEAD.
 - Cost: ≈ ¥0.07 (≈ $0.01) per full run; whole session incl. failed attempts/probes ¥0.31. DeepSeek balance left ≈ ¥17.88.
 
 ## Repo
-Private GitHub repo `openminion-triage-agent` on @WV629 (see report / git remote). Keep private until the submission repo is announced.
+**https://github.com/WV629/openminion-triage-agent** — PRIVATE (verified via API 2026-10-28). Keep private until the submission repo is announced.
+Hark GitHub App installed on WV629 (installation 176151824, selected repos) so Hark can git-push. Local repo history differs from GitHub's (first files went up via web upload); push from a fresh clone, not with `git push` from this dir.
 
 ## Left to do
 - 1–5 min demo video (screen-record `python -m triage_agent.cli openminion/openminion` + show approval prompt and examples/).
